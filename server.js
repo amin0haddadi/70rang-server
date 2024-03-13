@@ -48,7 +48,7 @@ app.use(errorHandler)
 // routes
 app.use('/', require('./routes/root'))
 app.use('/users', require('./routes/user'))
-app.use('/auth', require('./routes/authRoutes'))
+app.use('/auth', require('./routes/authRoutes')) 
 
 // Custom 404 page
 // app.all('*', (req, res) => {

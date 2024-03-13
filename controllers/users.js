@@ -27,7 +27,7 @@ const createUser = asyncHandler(async(req, res) => {
 
     const user = await User.create({firstName, lastName, phoneNumber, "password":hashedPassword })
 
-    if(user) res.status(201).json({ message: `CREATED: User ${phoneNumber} created successfully!` })
+    if(user) res.status(201).json({ message: `CREATED: User ${firstName} created successfully!` })
     else res.status(400).json({ message: 'BAD REQUEST : Invalid user data recieved' })
 })  
 
