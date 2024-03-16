@@ -51,6 +51,7 @@ app.use("/", require("./routes/root"));
 app.use("/users", require("./routes/user"));
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/products", require("./routes/product"));
+app.use("/categories", require("./routes/category"));
 
 // Custom 404 page
 // app.all('*', (req, res) => {
