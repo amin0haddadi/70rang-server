@@ -7,21 +7,20 @@ router.get(
   "/:categoryId/subcategories",
   subcategoryController.getAllSubcategories
 );
+router.get("/:subcategoryId", subcategoryController.getSubcategoryById);
 router.get(
-  "/:categoryId/subcategories/:subcategoryId",
-  subcategoryController.getSubcategoryById
+  "/:subcategoryId/subcategories",
+  subcategoryController.getAllSubSubcategories
 );
 router.post(
   "/:categoryId/subcategories",
   subcategoryController.createSubcategory
 );
-router.put(
-  "/:categoryId/subcategories/:subcategoryId",
-  subcategoryController.updateSubcategory
+router.post(
+  "/:subcategoryId/subcategories",
+  subcategoryController.createSubSubcategory
 );
-router.delete(
-  "/:categoryId/subcategories/:subcategoryId",
-  subcategoryController.deleteSubcategory
-);
+router.put("/:subcategoryId", subcategoryController.updateSubcategory);
+router.delete("/:subcategoryId", subcategoryController.deleteSubcategory);
 
 module.exports = router;

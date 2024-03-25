@@ -5,7 +5,10 @@ const asyncHandler = require("express-async-handler");
 const getAllSubcategories = asyncHandler(async (req, res) => {
   try {
     const categoryId = req.params.categoryId;
-    const subcategories = await Subcategory.find({ categoryId });
+    const subcategories = await Subcategory.find({
+      categoryId,
+      parentId: null,
+    }); // Only top-level subcategories
     res.status(200).json(subcategories);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -25,12 +28,38 @@ const getSubcategoryById = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllSubSubcategories = asyncHandler(async (req, res) => {
+  try {
+    const subcategoryId = req.params.subcategoryId;
+    const subSubcategories = await Subcategory.find({
+      parentId: subcategoryId,
+    });
+    res.json(subSubcategories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 const createSubcategory = asyncHandler(async (req, res) => {
   try {
     const { categoryId } = req.params;
     const { name } = req.body;
 
     const newSubcategory = new Subcategory({ categoryId, name });
+    const savedSubcategory = await newSubcategory.save();
+
+    res.status(201).json(savedSubcategory);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+const createSubSubcategory = asyncHandler(async (req, res) => {
+  try {
+    const parentId = req.params.subcategoryId;
+    const { name } = req.body;
+
+    const newSubcategory = new Subcategory({ parentId, name });
     const savedSubcategory = await newSubcategory.save();
 
     res.status(201).json(savedSubcategory);
@@ -79,4 +108,6 @@ module.exports = {
   createSubcategory,
   updateSubcategory,
   deleteSubcategory,
+  getAllSubSubcategories,
+  createSubSubcategory,
 };
