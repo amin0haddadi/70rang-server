@@ -7,9 +7,9 @@ router.get(
   "/:categoryId/subcategories",
   subcategoryController.getAllSubcategories
 );
-router.get("/:subcategoryId", subcategoryController.getSubcategoryById);
+router.get("/subcategory/:subcategoryId", subcategoryController.getSubcategoryById);
 router.get(
-  "/:subcategoryId/subcategories",
+  "/:subcategoryId/subsubcategories",
   subcategoryController.getAllSubSubcategories
 );
 router.post(
@@ -17,10 +17,10 @@ router.post(
   subcategoryController.createSubcategory
 );
 router.post(
-  "/:subcategoryId/subcategories",
+  "/:subcategoryId/subsubcategories",
   subcategoryController.createSubSubcategory
 );
-router.put("/:subcategoryId", subcategoryController.updateSubcategory);
-router.delete("/:subcategoryId", subcategoryController.deleteSubcategory);
+router.put("/subcategory/:subcategoryId", subcategoryController.updateSubcategory);
+router.delete("/subcategory/:subcategoryId", subcategoryController.deleteSubcategory);
 
 module.exports = router;

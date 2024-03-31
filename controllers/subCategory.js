@@ -24,7 +24,7 @@ const getSubcategoryById = asyncHandler(async (req, res) => {
     }
     res.json(subcategory);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "error 500" });
   }
 });
 
