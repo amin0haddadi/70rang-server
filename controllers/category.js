@@ -3,9 +3,17 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 
 const getAllCategory = asyncHandler(async (req, res) => {
-  const categories = await Category.find().lean();
-  if (!Category?.length)
-    return res.status(400).json({ message: "BAD REQUEST : No products found" });
+  const { search } = req.query;
+  const query = search ? { name: { $regex: new RegExp(search, "i") } } : {};
+
+  const categories = await Category.find(query).populate("products").lean();
+
+  if (!categories.length) {
+    return res
+      .status(400)
+      .json({ message: "BAD REQUEST : No categories found" });
+  }
+
   res.status(200).json(categories);
 });
 
@@ -74,17 +82,30 @@ const deleteCategory = asyncHandler(async (req, res) => {
       .status(400)
       .json({ message: "BAD REQUEST : category not found" });
 
-  const deletedCategory = await Category.deleteOne();
-  const reply = `category ${category.name} with ID ${category._id} deleted successfully!`;
-  res.status(200).json(reply);
+  await Product.deleteMany({ _id: { $in: category.products } }); // Delete associated products
+  await Category.deleteOne({ _id: id }); // Delete the category itself
+
+  res
+    .status(200)
+    .json({ message: `Category ${category.name} deleted successfully` });
 });
 
 const getCategoryById = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const { page = 1, limit = 12 } = req.query;
 
   if (!id) return res.status(400).json({ message: "category ID required" });
 
-  const category = await Category.findById(id).lean().exec();
+  const category = await Category.findById(id)
+    .populate({
+      path: "products",
+      options: {
+        skip: (page - 1) * limit,
+        limit: parseInt(limit),
+      },
+    })
+    .lean()
+    .exec();
 
   if (!category) return res.status(404).json({ message: "category not found" });
 

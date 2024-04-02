@@ -4,7 +4,7 @@ const productsController = require("../controllers/product");
 
 router
   .route("/")
-  .get(productsController.getAllProducs)
+  .get(productsController.getAllProducts)
   .post(productsController.createProduct)
   .patch(productsController.updateProduct)
   .delete(productsController.deleteProduct);

@@ -8,6 +8,7 @@ const productSchema = new Schema(
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
     description: { type: String },
+    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" }, // Reference to Category model
   },
   { timestamps: true }
 );
