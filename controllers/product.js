@@ -116,7 +116,10 @@ const getProductById = asyncHandler(async (req, res) => {
 
   if (!id) return res.status(400).json({ message: "Product ID required" });
 
-  const product = await Product.findById(id).lean().exec();
+  const product = await Product.findById(id)
+    .populate("categoryId", "name")
+    .lean()
+    .exec();
 
   if (!product) return res.status(404).json({ message: "product not found" });
 
