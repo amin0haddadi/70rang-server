@@ -53,6 +53,7 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/products", require("./routes/product"));
 app.use("/categories", require("./routes/category"));
 app.use("/categories", require("./routes/subCategory"));
+app.use("/cart", require("./routes/cart"));
 
 // Custom 404 page
 // app.all('*', (req, res) => {

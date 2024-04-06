@@ -59,11 +59,10 @@ const login = asyncHandler(async (req, res) => {
 
 const authenticateToken = asyncHandler(async (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = authHeader && authHeader.split(" ")[0];
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: Missing token." });
   }
-
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.user = decoded.UserInfo; // Store decoded user information in request object
