@@ -59,7 +59,7 @@ const login = asyncHandler(async (req, res) => {
 
 const authenticateToken = asyncHandler(async (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = authHeader && authHeader.split(" ")[0];
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: Missing token." });
   }
@@ -67,8 +67,6 @@ const authenticateToken = asyncHandler(async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.user = decoded.UserInfo; // Store decoded user information in request object
-    const { id, firstName, lastName, phoneNumber } = req.user;
-    res.status(200).json({ id, firstName, lastName, phoneNumber });
     next(); // Proceed to the next middleware
   } catch (error) {
     if (error.name === "TokenExpiredError") {
