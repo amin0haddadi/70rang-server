@@ -21,7 +21,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
 });
 
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, images, price, quantity, description, categoryId } = req.body;
+  const { name, price, quantity, description, categoryId } = req.body;
 
   if (!name || !price || !quantity || !categoryId)
     return res
@@ -36,6 +36,8 @@ const createProduct = asyncHandler(async (req, res) => {
     return res
       .status(409)
       .json({ message: "CONFLICT : This product already exists!" });
+
+  const images = req.files.map((file) => `/uploads/${file.filename}`);
 
   const product = await Product.create({
     name,
@@ -85,6 +87,14 @@ const updateProduct = asyncHandler(async (req, res) => {
   product.quantity = quantity;
   product.description = description;
   product.categoryId = categoryId;
+
+  if (req.files && req.files.length > 0) {
+    const imagePaths = req.files.map((file) => `/uploads/${file.filename}`);
+    product.images = imagePaths; // Update images only if new images are uploaded
+  } else {
+    // Preserve existing images if no new images are uploaded
+    product.images = product.images || [];
+  }
 
   const updatedProduct = await product.save();
   res
